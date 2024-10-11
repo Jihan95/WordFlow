@@ -1,0 +1,5 @@
+flask
+sqlalchemy
+mysql
+Flask-JWT-Extended
+Flask-RESTful

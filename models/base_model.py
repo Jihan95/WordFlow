@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 '''
-module that contain BaseModel
+This module contains the BaseModel class, which defines common attributes 
+and methods for other models in the application.
 '''
 
 import models  # type: ignore
@@ -11,13 +12,18 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import declarative_base
 
 
+# Initialize SQLAlchemy with the Flask app instance
 db = SQLAlchemy(app)
 
 
 class BaseModel:
     '''
-    BaseModel that defines all common attributes/methods for other classes
+    BaseModel class defines common attributes and methods shared across all 
+    models. It serves as the base class for other models, providing 
+    auto-generated unique IDs, timestamps, and utility methods for saving 
+    and deleting records.
     '''
+    # Common attributes for all models: id, created_at, and updated_at
     id = db.Column(
         db.String(60),
         primary_key=True,
@@ -36,7 +42,16 @@ class BaseModel:
         )
 
     def __init__(self, *args, **kwargs):
-        """Initialization of the base model"""
+        """
+        Initializes a new instance of the BaseModel.
+        If kwargs are provided, they are used to populate the instance attributes.
+        Otherwise, a new UUID is assigned as the id, and current timestamps 
+        are set for created_at and updated_at.
+        
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments used to set attributes.
+        """
         format = "%Y-%m-%dT%H:%M:%S.%f"
         if kwargs:
             for key, value in kwargs.items():
@@ -63,7 +78,11 @@ class BaseModel:
 
     def __str__(self):
         '''
-        Return the informal presentation of class
+        Returns a human-readable string representation of the object, including
+        its class name and id, along with its attributes.
+        
+        Returns:
+            str: A formatted string representing the instance.
         '''
         obj_dict = self.__dict__.copy()
         obj_dict.pop("_sa_instance_state", None)
@@ -71,20 +90,21 @@ class BaseModel:
 
     def save(self):
         '''
-        updates the public instance attribute updated_at
-        with the current datetime
+        Updates the `updated_at` attribute to the current datetime and 
+        commits the changes to the storage.
         '''
-
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
         '''
-        returns a dictionary containing all keys/values of
-        __dict__ of the instance
+        Converts the instance into a dictionary format, including the class name 
+        and ISO-formatted timestamps for serialization purposes.
+        
+        Returns:
+            dict: A dictionary containing the instance's attributes and class name.
         '''
-
         instance_dict = self.__dict__.copy()
         instance_dict["__class__"] = self.__class__.__name__
         if "created_at" in instance_dict:
@@ -98,6 +118,6 @@ class BaseModel:
 
     def delete(self):
         """
-        to delete the current instance from the storage
+        Deletes the current instance from storage.
         """
         models.storage.delete(self)

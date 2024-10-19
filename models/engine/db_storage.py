@@ -151,3 +151,21 @@ class DBStorage:
         if cls:
             return len(self.all(cls))
         return len(self.all())
+    
+    def get_user_by_email(self, cls, email):
+        """
+        Retrieves a user based on their email address.
+        
+        Args:
+            cls: The User class.
+            email: The email of the user to be retrieved.
+        
+        Returns:
+            The User object if found, otherwise None.
+        """
+        if cls is None or email is None:
+            return None
+        if cls == User:
+            user = self.__session.query(User).filter_by(email=email).first()
+            return user
+        return None

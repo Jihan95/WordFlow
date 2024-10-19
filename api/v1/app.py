@@ -1,7 +1,10 @@
 """Main app"""
-from __init__ import app, bcrypt # type: ignore
+from api.v1 import app, bcrypt # type: ignore
 from flask import jsonify
 from models import storage # type: ignore
+from api.v1.views import app_views # type: ignore
+
+app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext

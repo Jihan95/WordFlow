@@ -1,9 +1,10 @@
 """User Model"""
 from models.base_model import BaseModel, db  # type: ignore
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 
 
-class User(BaseModel, db.Model):
+class User(UserMixin, BaseModel, db.Model):
     """User Class"""
     __tablename__ = "users"
     username = db.Column(db.String(128), unique=True, nullable=False)

@@ -10,10 +10,8 @@ from __init__ import app
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import declarative_base
+from api.v1 import db
 
-
-# Initialize SQLAlchemy with the Flask app instance
-db = SQLAlchemy(app)
 
 
 class BaseModel:

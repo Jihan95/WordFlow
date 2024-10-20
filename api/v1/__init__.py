@@ -5,6 +5,7 @@ import os
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 
 
@@ -23,6 +24,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{USER_NAME}:{PWD}@{HOS
 
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'

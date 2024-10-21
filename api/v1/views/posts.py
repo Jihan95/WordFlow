@@ -6,6 +6,7 @@ and deleting posts by interacting with the POst model.
 """
 from models.user import User  # type: ignore
 from models.post import Post # type: ignore
+from models.category import Category  # type: ignore
 from api.v1.views import app_views  # type: ignore
 from models import storage  # type: ignore
 from flask import jsonify, abort, request
@@ -163,3 +164,46 @@ def updatePostById(post_id):
             setattr(post, key, value)
     storage.save()
     return jsonify(post.to_dict()), 200
+
+
+@app_views.route('/posts/<post_id>/categories/<category_id>', methods=['POST'], strict_slashes=False)
+@jwt_required()
+def assignCategorytoPost(post_id, category_id):
+    """
+    Assign Category to Post
+    """
+    current_user_id = get_jwt_identity()
+    post = storage.get(Post, post_id)
+    if post is None:
+        abort(404, {'error': 'Post not found'})
+    category = storage.get(Category, category_id)
+    if category is None:
+        abort(404, {'error': 'Category not found'})
+    if current_user_id != post.user_id:
+        abort(403, 'You are not authorized to update this post')
+    if category not in post.categories:
+        post.categories.append(category)
+        storage.save()
+    return jsonify(post.to_dict()), 200
+    
+
+@app_views.route('/posts/<post_id>/categories/<category_id>', methods=['DELETE'], strict_slashes=False)
+@jwt_required()
+def removeCtegoryFromPost(post_id, category_id):
+    """
+    Remove a category from a post. Only the post author can remove categories.
+    """
+    current_user_id = get_jwt_identity()
+    post = storage.get(Post, post_id)
+    if post is None:
+        abort(404, {'error': 'Post not found'})
+    category = storage.get(Category, category_id)
+    if category is None:
+        abort(404, {'error': 'Category not found'})
+    if current_user_id != post.user_id:
+        abort(403, 'You are not authorized to update this post')
+    if category in post.categories:
+        post.categories.remove(category)
+        storage.save()
+        return jsonify(post.to_dict()), 200
+    return jsonify({'msg': 'Category not assigned to this post'}), 400

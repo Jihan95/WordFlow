@@ -59,8 +59,9 @@ DELETE /api/v1/blogs/<id> - Delete a blog post.
 
 # Comments
 
-POST /api/v1/blogs/<id>/comments - Add a comment to a blog post.
-GET /api/v1/blogs/<id>/comments - Retrieve comments for a specific blog post.
+POST /api/v1/blogs/<id>/comments - # Add a comment to a blog post.
+
+GET /api/v1/blogs/<id>/comments - # Retrieve comments for a specific blog post.
 Authentication
 WordFlow API uses JWT-based authentication. After logging in, users receive a token that they must include in the Authorization header as Bearer <token> with each request to protected endpoints.
 

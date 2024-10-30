@@ -1,4 +1,4 @@
-## WordFlow API
+# WordFlow API
 
 # Project Overview
 
@@ -46,22 +46,28 @@ Below is a list of core endpoints in the WordFlow API. Detailed documentation fo
 # Users
 
 POST /api/v1/users/register - Register a new user.
+
 POST /api/v1/users/login - Login and receive a JWT token.
+
 GET /api/v1/users/profile - Retrieve authenticated user's profile.
 
 # Blogs
 
 GET /api/v1/blogs - List all blogs.
+
 POST /api/v1/blogs - Create a new blog post.
+
 GET /api/v1/blogs/<id> - Retrieve a specific blog post.
+
 PUT /api/v1/blogs/<id> - Update a blog post.
+
 DELETE /api/v1/blogs/<id> - Delete a blog post.
 
 # Comments
 
-POST /api/v1/blogs/<id>/comments - # Add a comment to a blog post.
+POST /api/v1/blogs/<id>/comments - Add a comment to a blog post.
 
-GET /api/v1/blogs/<id>/comments - # Retrieve comments for a specific blog post.
+GET /api/v1/blogs/<id>/comments - Retrieve comments for a specific blog post.
 Authentication
 WordFlow API uses JWT-based authentication. After logging in, users receive a token that they must include in the Authorization header as Bearer <token> with each request to protected endpoints.
 

@@ -53,7 +53,7 @@ def addComment(post_id):
         content=data['content']
     )
     storage.new(new_comment)
-    new_comment.save()
+    storage.save()
     return jsonify(new_comment.to_dict()), 201
     
 
